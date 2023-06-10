@@ -5,9 +5,14 @@ function Login(props) {
     const [lastNameError, setLastNameError] = useState("");
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const [confirmPasswordError, setConfirmPasswordError] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const handleFirstNameChange = (e) =>{
-
+        const value = e.target.value;
         const nameRegex = /^[a-zA-Z]+$/;
         if(!nameRegex.test(e.target.value) && e.target.value){
             setFirstNameError('Invalid first name. Accepting only letters!')
@@ -15,10 +20,11 @@ function Login(props) {
         else {
             setFirstNameError("");
             props.setfirstName(e.target.value);
+            setFirstName(value);
         }
     }
     const handleLastNameChange = (e) =>{
-
+        const value = e.target.value;
         const nameRegex = /^[a-zA-Z]+$/;
         if(!nameRegex.test(e.target.value) && e.target.value){
             setLastNameError('Invalid last name. Accepting only letters!')
@@ -26,11 +32,12 @@ function Login(props) {
         else {
             setLastNameError("");
             props.setlastName(e.target.value);
+            setLastName(value);
         }
     }
 
     const handleEmailChange = (e) =>{
-
+        const value = e.target.value;
         const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
         if(!emailRegex.test(e.target.value) && e.target.value){
             setEmailError("Invalid email!!")
@@ -38,10 +45,11 @@ function Login(props) {
         else {
             setEmailError("");
             props.setEmail(e.target.value);
+            setEmail(value);
         }
     }
     const handlePasswordChange = (e) =>{
-
+        const value = e.target.value;
         const passwordRegex = /^(?=.*[a-zA-Z0-9@#$%^&+=])[a-zA-Z0-9@#$%^&+=]{8,}$/;
         if(!passwordRegex.test(e.target.value) && e.target.value){
             setPasswordError('Accepting only alpha-numeric and special characters. Minimum limit is 8 characters.')
@@ -49,15 +57,18 @@ function Login(props) {
         else {
             setPasswordError("");
             props.setPassword(e.target.value);
+            setPassword(value);
         }
     }
     const handleConfirmPasswordChange = (e) => {
+        const value = e.target.value;
         const confirmedPassword = e.target.value;
-        setConfirmPassword(confirmedPassword);
+        setConfirmPasswordError(confirmedPassword);
         if (confirmedPassword !== props.password) {
-            setConfirmPassword("Passwords do not match.");
+            setConfirmPasswordError("Passwords do not match.");
         } else {
-            setConfirmPassword("");
+            setConfirmPasswordError("");
+            setConfirmPassword(value);
         }
     };
 
@@ -68,10 +79,18 @@ function Login(props) {
             lastNameError.length > 0 ||
             emailError.length > 0 ||
             passwordError.length > 0 ||
-            confirmPassword.length > 0
-        ) {
+            confirmPasswordError.length > 0 ||
+            firstName.length === 0 ||
+            lastName.length === 0 ||
+            email.length === 0 ||
+            password.length === 0 ||
+            confirmPassword.length === 0
+    ) {
             alert("Please enter valid fields");
-        } else {
+        }
+
+
+        else {
             props.setIsLoggedIn(true);
             alert("Form has been successfully submitted");
         }
@@ -103,10 +122,10 @@ function Login(props) {
                 {passwordError.length>0 ? (
                     <h6 style ={{color:"red"}}>{passwordError} </h6>) :null}
                 <br/>
-                <label>Password: </label>
+                <label>Confirm Password: </label>
                 <input type="password" name="confirmpassword" onChange={handleConfirmPasswordChange }></input>
-                {confirmPassword.length>0 ? (
-                    <h6 style ={{color:"red"}}>{confirmPassword} </h6>) :null}
+                {confirmPasswordError.length>0 ? (
+                    <h6 style ={{color:"red"}}>{confirmPasswordError} </h6>) :null}
                 <br/>
                 <button  type="submit" onClick={handleSubmit}>Submit</button>
             </form>
